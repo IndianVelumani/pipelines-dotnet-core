@@ -1,31 +1,21 @@
-# ASP.NET Core
-# Build and test ASP.NET Core projects targeting .NET Core.
-# Add steps that run tests, create a NuGet package, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
-
-trigger:
-- master
-
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 
 variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration) -o testpath
-  displayName: 'dotnet build $(buildConfiguration)'
-
-- task: ArchiveFiles@2
+- task: UseDotNet@2
   inputs:
-    rootFolderOrFile: '$(Build.SourcesDirectory)' 
-    includeRootFolder: false 
-    archiveType: 'zip'
-    TargetPath: '$(Build.SourcesDirectory)/testpath'
-    archiveFile: '$(Build.SourcesDirectory)/$(Build.BuildId).zip'
+    version: '2.1.x'
+    includePreviewVersions: true # Required for preview versions
 
-- task: PublishPipelineArtifact@1
+- task: DotNetCoreCLI@2
   inputs:
-    targetPath: '$(Pipeline.Workspace)'
-    artifact: 'BuildArtifact'
-    publishLocation: 'pipeline'
+    command: publish
+    publishWebProjects: false
+    projects: '**/*.csproj'
+    zipAfterPublish: false
+    modifyOutputPath: true
+    arguments: '--configuration $(buildConfiguration) -o testpath'
+  displayName: 'dotnet publish $(buildConfiguration)'
