@@ -12,13 +12,9 @@ steps:
 
 - task: DotNetCoreCLI@2
   inputs:
-    command: publish
-    publishWebProjects: false
-    projects: '**/*.csproj'
-    zipAfterPublish: false
-    modifyOutputPath: true
+    command: build
     arguments: '-o testpath'
-  displayName: 'dotnet publish $(buildConfiguration)'
+  displayName: 'dotnet build $(buildConfiguration)'
 
 - task: ArchiveFiles@2
   inputs:
