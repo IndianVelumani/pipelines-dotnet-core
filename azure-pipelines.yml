@@ -17,7 +17,7 @@ steps:
     projects: '**/*.csproj'
     zipAfterPublish: false
     modifyOutputPath: true
-    arguments: '--configuration $(buildConfiguration)'
+    arguments: '-o testpath'
   displayName: 'dotnet publish $(buildConfiguration)'
 
 - task: ArchiveFiles@2
